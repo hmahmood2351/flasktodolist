@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block body %}
+<p>The view page. The to-do list as it currently is: </p>
+
+{% for note in notelist %}
+<p>{{ note }}</p>
+{% endfor %}
+
+{% endblock body %}
