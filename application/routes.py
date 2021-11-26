@@ -29,16 +29,16 @@ def addnoteform():
         status = form.status.data
 
         if form.validate_on_submit():
-            msg = f"Note: {name}. Submitting to database."
+            message = f"Note: {name}. Submitting to database."
             duedate = date.today() + timedelta(days=14)
             new_note = Todo(name=name, description=description, duedate=duedate, status=status)
             db.session.add(new_note)
             db.session.commit()
             #IMPLEMENTED adding to DB functionality
         else:
-            msg = "Incorrect validation."
+            message = "Incorrect validation."
             
-    return render_template('addtodo.html', form=form, message=msg)
+    return render_template('addtodo.html', form=form, message=message)
 
 @app.route('/home/add.<name>.<description>.<status>')
 def addnote(name, description, status):
@@ -56,7 +56,7 @@ def todoview():
     notes = ''
     notelist = []
     for i in currentdb:
-        notes = notes + " " + str(i.noteid) + " " + i.name + " " + i.description + " " + str(i.duedate) + " " + i.status
+        notes = " " + str(i.noteid) + " " + i.name + " " + i.description + " " + str(i.duedate) + " " + i.status
         notelist.append(notes)
     return render_template('viewtodo.html', notelist=notelist)
 
@@ -80,7 +80,7 @@ def deletenote(id):
 def searchdb(name):
     msg = []
     currenti = ''
-    currentdb = Todo.query.all()
+    currentdb = Todo.query.filter_by(name=name).all()
     for i in currentdb:
         currenti = str(i.noteid) + " " + i.name + " " + i.description + " " + str(i.duedate) + " " + i.status
         msg.append(currenti)
